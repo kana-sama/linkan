@@ -27,7 +27,7 @@
             (args (cdr sign)))
        '(define* ,name
           (label ,name
-            (lambda ,(cdr sign) ,body)))))))
+            (lambda ,args ,body)))))))
 
 (define zero '(zero))
 (define (succ x) (cons 'succ x))
