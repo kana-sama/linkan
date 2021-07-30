@@ -1,11 +1,28 @@
-module Language.SExpr.Parser (parse, parses) where
+module Language.SExpr (SExpr (..), parse, parses) where
 
+import Data.String (IsString (..))
 import Data.Void (Void)
-import Language.SExpr.Type (SExpr (..))
 import Text.Megaparsec (Parsec, between, choice, empty, eof, many, manyTill, oneOf, runParser, some, (<?>), (<|>))
 import Text.Megaparsec.Char (alphaNumChar, char, space1)
 import qualified Text.Megaparsec.Char.Lexer as L
 import Text.Megaparsec.Error (errorBundlePretty)
+import Text.Pretty (Pretty (..))
+
+data SExpr
+  = Atom String
+  | List [SExpr]
+  | Quote SExpr
+  | Unquote SExpr
+  deriving stock (Show, Eq)
+
+instance IsString SExpr where
+  fromString = Atom
+
+instance Pretty SExpr where
+  pretty (Atom x) = x
+  pretty (List xs) = "(" <> unwords [pretty x | x <- xs] <> ")"
+  pretty (Quote e) = "'" <> pretty e
+  pretty (Unquote e) = "," <> pretty e
 
 type Parser = Parsec Void String
 
@@ -27,7 +44,7 @@ sexpr =
       Unquote <$> unquote <?> "unquote"
     ]
   where
-    atom = lexeme (some (alphaNumChar <|> oneOf ("+-*/><!?=&" :: [Char])))
+    atom = lexeme (some (alphaNumChar <|> oneOf ("+-*/><!?=&." :: [Char])))
     list = between (symbol "(") (symbol ")") (many sexpr)
     quote = char '\'' *> sexpr
     unquote = char ',' *> sexpr

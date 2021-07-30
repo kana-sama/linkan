@@ -16,14 +16,13 @@ default-extensions:
   - RecursiveDo
   - ScopedTypeVariables
   - ViewPatterns
+  - DeriveAnyClass
 
 dependencies:
   - base >= 4.14.2.0
   - containers
   - megaparsec
-
-ghc-options:
-  - -Wincomplete-patterns
+  - mtl
 
 library:
   source-dirs: src
