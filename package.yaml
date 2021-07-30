@@ -1,0 +1,29 @@
+name: linkan
+
+default-extensions:
+  - DerivingStrategies
+  - OverloadedStrings
+  - PatternSynonyms
+  - ViewPatterns
+  - BlockArguments
+  - ConstraintKinds
+  - ImplicitParams
+  - LambdaCase
+  - OverloadedStrings
+  - ParallelListComp
+  - PatternSynonyms
+  - RankNTypes
+  - RecursiveDo
+  - ScopedTypeVariables
+  - ViewPatterns
+
+dependencies:
+  - base >= 4.14.2.0
+  - containers
+  - megaparsec
+
+ghc-options:
+  - -Wincomplete-patterns
+
+library:
+  source-dirs: src
