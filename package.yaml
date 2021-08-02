@@ -17,12 +17,15 @@ default-extensions:
   - ScopedTypeVariables
   - ViewPatterns
   - DeriveAnyClass
+  - ImportQualifiedPost
 
 dependencies:
   - base >= 4.14.2.0
   - containers
   - megaparsec
   - mtl
+  - haskeline
+  - exceptions
 
 library:
   source-dirs: src

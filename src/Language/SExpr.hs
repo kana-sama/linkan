@@ -1,10 +1,12 @@
+{-# LANGUAGE ImportQualifiedPost #-}
+
 module Language.SExpr (SExpr (..), parse, parses) where
 
 import Data.String (IsString (..))
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, between, choice, empty, eof, many, manyTill, oneOf, runParser, some, (<?>), (<|>))
 import Text.Megaparsec.Char (alphaNumChar, char, space1)
-import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Char.Lexer qualified as L
 import Text.Megaparsec.Error (errorBundlePretty)
 import Text.Pretty (Pretty (..))
 
@@ -27,7 +29,7 @@ instance Pretty SExpr where
 type Parser = Parsec Void String
 
 sc :: Parser ()
-sc = L.space space1 (L.skipLineComment "#") empty
+sc = L.space space1 (L.skipLineComment ";") empty
 
 lexeme :: Parser a -> Parser a
 lexeme = L.lexeme sc
@@ -44,7 +46,7 @@ sexpr =
       Unquote <$> unquote <?> "unquote"
     ]
   where
-    atom = lexeme (some (alphaNumChar <|> oneOf ("+-*/><!?=&." :: [Char])))
+    atom = lexeme (some (alphaNumChar <|> oneOf ("+-*/><!?=&._" :: [Char])))
     list = between (symbol "(") (symbol ")") (many sexpr)
     quote = char '\'' *> sexpr
     unquote = char ',' *> sexpr
