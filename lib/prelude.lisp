@@ -100,19 +100,6 @@
                             (let ,(nth 1 cond-pair)
                               (do ,(nth 1 branch))))))))))
 
-(define (match2 value branches)
-  '(let ((matched* ,value))
-     ,(cons 'cond
-        (map branches (lambda (branch)
-                        (let ((cond-pair (match->cond-pair 'matched* (nth 0 branch))))
-                          '(,(cons 'and (nth 0 cond-pair))
-                            (let ,(nth 1 cond-pair)
-                              (do ,(nth 1 branch))))))))))
-
-(print
-  (match2 'x
-    '(((number x) x))))
-
 (define (my-length list)
   (match list
     (nil 0)
